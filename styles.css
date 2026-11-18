@@ -1,6 +1,8 @@
+/* Theme matches C:\Tresata\.streamlit\config.toml: light base, primary
+   #F04E14, background #FFFFFF, secondary background #F5F5F7, text #1D1D1F. */
 :root {
-  color-scheme: light dark;
-  background: light-dark(#f0f2f1, #191e21);
+  color-scheme: light;
+  background: #f5f5f7;
 }
 body {
   margin: 0;
@@ -24,29 +26,44 @@ body > main {
 }
 
 #campus-stores {
-  color-scheme: light dark;
-  --ink: light-dark(#202c35, #ecf0f0);
-  --quiet: light-dark(#526370, #b9c5cb);
-  --paper: light-dark(#fff, #232a30);
-  --desk: light-dark(#f3f5f5, #1d2328);
-  --nav: light-dark(#eaf0f1, #29333b);
-  --sel: light-dark(#233e4c, #c5dce4);
-  --inv: light-dark(#fff, #172b34);
-  --line: light-dark(#d2dcdf, #475158);
-  --memo: light-dark(#fff3d8, #3d3426);
-  --memotxt: light-dark(#65491e, #ead4a5);
-  --mark: light-dark(#bd502f, #f2a585);
-  --ok: light-dark(#e3f1e8, #2d4838);
-  --oktxt: light-dark(#25523d, #bedac8);
+  color-scheme: light;
+  --primary: #f04e14; /* primaryColor */
+  --primary-press: #d8420d;
+  --primary-tint: #fdebe4;
+  --ink: #1d1d1f; /* textColor */
+  --quiet: #6e6e73;
+  --paper: #ffffff; /* backgroundColor */
+  --desk: #f5f5f7; /* secondaryBackgroundColor */
+  --nav: #f5f5f7;
+  --sel: var(--primary);
+  --inv: #ffffff;
+  --line: #e2e2e7;
+  --memo: #fff4ef;
+  --memotxt: #9a3410;
+  --mark: var(--primary);
+  --ok: #e8f5ec;
+  --oktxt: #1f6b3a;
+  --bad: #fdecea;
+  --badtxt: #b42318;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-sheet: cubic-bezier(0.165, 0.84, 0.44, 1);
   background: var(--paper);
   color: var(--ink);
+  /* The system face ships optical sizing and tracking tables. */
   font:
-    14px/1.48 "Inter",
-    "Arial",
+    14px/1.48 system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
     sans-serif;
   border: 1px solid var(--line);
   border-radius: 14px;
-  overflow: hidden;
+  /* clip, not hidden: keeps the rounded corners without becoming a scroll
+     container, so the status bar can stick to the viewport. */
+  overflow: clip;
+  box-shadow:
+    0 1px 2px rgb(0 0 0 / 0.06),
+    0 8px 28px rgb(0 0 0 / 0.08);
   container-type: inline-size;
 }
 #campus-stores * {
@@ -61,19 +78,25 @@ body > main {
 #campus-stores p {
   margin: 0;
 }
+/* Tracking tightens as size grows; body text stays at 0. */
 #campus-stores h1 {
   font:
-    600 clamp(24px, 4cqw, 33px)/1.13 "Archivo",
-    system-ui,
+    650 clamp(24px, 4cqw, 33px)/1.1 system-ui,
+    -apple-system,
+    "Segoe UI",
     sans-serif;
-  letter-spacing: -0.05em;
+  letter-spacing: -0.025em;
 }
 #campus-stores h2 {
   font-size: 20px;
-  letter-spacing: -0.03em;
+  line-height: 1.2;
+  font-weight: 650;
+  letter-spacing: -0.015em;
 }
 #campus-stores h3 {
   font-size: 15px;
+  font-weight: 650;
+  letter-spacing: -0.005em;
 }
 #campus-stores .muted,
 #campus-stores small {
@@ -141,21 +164,96 @@ body > main {
   display: grid;
   text-align: right;
 }
+#campus-stores .clock {
+  gap: 3px;
+}
 #campus-stores .clock strong {
   font-variant-numeric: tabular-nums;
+  background: var(--desk);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 4px 12px;
+  letter-spacing: -0.01em;
 }
+/* The shift brief: a quiet card with the timeline as its wayfinding. */
 #campus-stores .shift {
-  background: var(--memo);
+  background: color-mix(in srgb, var(--memo) 75%, var(--paper));
   color: var(--memotxt);
-  padding: 12px 19px;
+  padding: 14px 20px 16px;
   justify-content: space-between;
+  align-items: flex-end;
   border-block: 1px solid var(--line);
+  box-shadow: inset 4px 0 var(--mark);
 }
 #campus-stores .shift div {
   max-width: 67ch;
 }
 #campus-stores .shift b {
-  font-size: 13px;
+  font-size: 15px;
+  letter-spacing: -0.005em;
+}
+#campus-stores .shift p {
+  margin-top: 2px;
+  color: var(--ink);
+  opacity: 0.86;
+}
+#campus-stores .timeline {
+  list-style: none;
+  margin: 0 0 10px;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+}
+#campus-stores .timeline li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--memotxt);
+  opacity: 0.6;
+}
+#campus-stores .timeline li + li::before {
+  content: "";
+  width: 22px;
+  height: 1.5px;
+  border-radius: 1px;
+  background: currentColor;
+  opacity: 0.5;
+  margin-right: 2px;
+}
+#campus-stores .timeline .dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+  border: 1.5px solid currentColor;
+}
+#campus-stores .timeline .dot svg {
+  width: 12px;
+  height: 12px;
+  stroke-width: 3;
+}
+#campus-stores .timeline .done {
+  opacity: 0.85;
+}
+#campus-stores .timeline .done .dot {
+  background: var(--memotxt);
+  color: var(--memo);
+  border-color: var(--memotxt);
+}
+#campus-stores .timeline .now {
+  opacity: 1;
+}
+#campus-stores .timeline .now .dot {
+  background: var(--mark);
+  border-color: var(--mark);
+  color: var(--inv);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--mark) 28%, transparent);
 }
 #campus-stores .shift button {
   background: transparent;
@@ -179,14 +277,34 @@ body > main {
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
+  transition:
+    transform 100ms ease-out,
+    border-color 150ms ease,
+    background-color 150ms ease;
 }
-#campus-stores button:hover {
-  border-color: var(--sel);
+/* Feedback on press, not on release. */
+#campus-stores button:active {
+  transform: scale(0.97);
+}
+@media (hover: hover) and (pointer: fine) {
+  #campus-stores button:hover {
+    border-color: var(--sel);
+  }
 }
 #campus-stores .primary {
-  background: var(--sel);
+  background: var(--primary);
   color: var(--inv);
-  border-color: var(--sel);
+  border-color: var(--primary);
+}
+#campus-stores .primary:active {
+  background: var(--primary-press);
+  border-color: var(--primary-press);
+}
+@media (hover: hover) and (pointer: fine) {
+  #campus-stores .primary:hover {
+    background: var(--primary-press);
+    border-color: var(--primary-press);
+  }
 }
 #campus-stores :is(button, input, textarea, select, summary):focus-visible {
   outline: 3px solid var(--mark);
@@ -214,9 +332,88 @@ body > main {
   background: transparent;
   font-weight: 500;
 }
+#campus-stores nav button {
+  min-height: 38px;
+  border-radius: 8px;
+}
+/* Selected tab: tinted, with an accent edge, not a solid slab. */
 #campus-stores nav button[aria-pressed="true"] {
-  background: var(--sel);
-  color: var(--inv);
+  background: var(--primary-tint);
+  color: var(--ink);
+  font-weight: 650;
+  box-shadow: inset 3px 0 var(--primary);
+}
+@media (hover: hover) and (pointer: fine) {
+  #campus-stores nav button:hover {
+    background: color-mix(in srgb, var(--sel) 8%, transparent);
+    border-color: transparent;
+  }
+}
+/* Request list rows: the whole row is the target. */
+#campus-stores .reqrow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto 16px;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--line);
+  border-radius: 0;
+  padding: 13px 8px;
+  font-size: 14px;
+  font-weight: 400;
+}
+#campus-stores .reqrow:last-child {
+  border-bottom: 1px solid var(--line);
+}
+#campus-stores .reqrow:active {
+  transform: scale(0.99);
+  background: color-mix(in srgb, var(--sel) 10%, transparent);
+}
+@media (hover: hover) and (pointer: fine) {
+  #campus-stores .reqrow:hover {
+    background: color-mix(in srgb, var(--sel) 7%, transparent);
+  }
+  #campus-stores .reqrow:hover .chev {
+    translate: 2px 0;
+  }
+}
+#campus-stores .reqmain strong {
+  display: block;
+  font-size: 15px;
+  font-weight: 650;
+  letter-spacing: -0.005em;
+}
+#campus-stores .reqmain small {
+  display: block;
+  margin-top: 2px;
+}
+#campus-stores .reqside {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+#campus-stores .mini {
+  width: 56px;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--desk);
+  border: 1px solid var(--line);
+  overflow: hidden;
+}
+#campus-stores .mini span {
+  display: block;
+  height: 100%;
+  background: var(--oktxt);
+  transform-origin: left center;
+}
+#campus-stores .chev {
+  width: 16px;
+  height: 16px;
+  color: var(--quiet);
+  transition: translate 150ms ease;
 }
 #campus-stores nav svg {
   width: 16px;
@@ -262,6 +459,236 @@ body > main {
 #campus-stores .good {
   background: var(--ok);
   color: var(--oktxt);
+}
+#campus-stores .st-overdue {
+  background: var(--bad);
+  color: var(--badtxt);
+  font-weight: 650;
+}
+#campus-stores .st-duesoon {
+  background: var(--memo);
+  color: var(--memotxt);
+  font-weight: 650;
+}
+#campus-stores .st-outstanding {
+  background: var(--desk);
+  color: var(--ink);
+  font-weight: 600;
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+#campus-stores .st-returned {
+  background: var(--ok);
+  color: var(--oktxt);
+}
+#campus-stores .count {
+  margin-left: auto;
+  background: var(--mark);
+  color: var(--inv);
+  border-radius: 9px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 0 6px;
+}
+#campus-stores .progress {
+  height: 8px;
+  background: var(--desk);
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  overflow: hidden;
+  margin: 0 0 6px;
+}
+/* Scaled, not resized, so the fill animates on the compositor. */
+#campus-stores .progress span {
+  display: block;
+  height: 100%;
+  background: var(--oktxt);
+  transform-origin: left center;
+}
+#campus-stores .summary {
+  border-left-color: var(--oktxt);
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+#campus-stores .summary.is-dragging {
+  cursor: grabbing;
+}
+#campus-stores .summary.is-settling {
+  transition:
+    transform 200ms var(--ease-sheet),
+    opacity 200ms var(--ease-sheet);
+}
+#campus-stores .summary ul {
+  margin: 6px 0 8px;
+  padding-left: 18px;
+}
+#campus-stores .empty {
+  padding: 18px 0;
+  color: var(--quiet);
+}
+#campus-stores .filters input {
+  width: min(260px, 60vw);
+}
+#campus-stores .sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+#campus-stores table.loans {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+#campus-stores .loans th {
+  text-align: left;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--quiet);
+  padding: 6px 8px 6px 0;
+  border-bottom: 1px solid var(--line);
+}
+#campus-stores .loans td {
+  padding: 9px 8px 9px 0;
+  border-top: 1px solid var(--line);
+  vertical-align: top;
+}
+#campus-stores .loans td small {
+  display: block;
+}
+#campus-stores .loans .act {
+  text-align: right;
+}
+#campus-stores .loans .noterow td {
+  border-top: 0;
+  padding-top: 0;
+  color: var(--quiet);
+}
+#campus-stores .loans tr.picked td {
+  background: var(--memo);
+}
+/* Overdue reads before the status column is reached. */
+#campus-stores .loans tr.is-overdue td:first-child {
+  box-shadow: inset 3px 0 var(--badtxt);
+  padding-left: 9px;
+}
+#campus-stores .loans td:first-child b,
+#campus-stores .loans .act button,
+#campus-stores .loans .tag {
+  white-space: nowrap;
+}
+/* The register table needs room; below that it becomes one card per loan. */
+@container (max-width: 860px) {
+  #campus-stores .loans thead {
+    display: none;
+  }
+  #campus-stores .loans,
+  #campus-stores .loans tbody,
+  #campus-stores .loans tr,
+  #campus-stores .loans td {
+    display: block;
+  }
+  #campus-stores .loans tr:not(.noterow) {
+    border-top: 1px solid var(--line);
+    padding: 10px 0 8px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 6px 12px;
+  }
+  #campus-stores .loans td {
+    border: 0;
+    padding: 0;
+  }
+  #campus-stores .loans td[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 11px;
+    color: var(--quiet);
+  }
+  #campus-stores .loans .act {
+    text-align: left;
+    align-self: end;
+  }
+  #campus-stores .loans .noterow td {
+    padding-bottom: 8px;
+  }
+}
+#campus-stores .kithead {
+  margin: 18px 0 4px;
+}
+#campus-stores .kititem {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  margin: 10px 0 0;
+  padding: 8px 11px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 18px;
+  align-items: center;
+}
+#campus-stores .kititem legend {
+  font-weight: 600;
+  padding: 0 4px;
+}
+/* Returned / Still out reads as a two-way segmented choice, not two specks. */
+#campus-stores .choice {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  cursor: pointer;
+  min-height: 36px;
+  padding: 6px 12px 6px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-weight: 550;
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    transform 100ms ease-out;
+}
+#campus-stores .choice:active {
+  transform: scale(0.98);
+}
+#campus-stores .choice:has(input:checked) {
+  background: var(--ok);
+  border-color: var(--oktxt);
+  color: var(--oktxt);
+}
+#campus-stores .choice:has(input[value="out"]:checked) {
+  background: var(--memo);
+  border-color: var(--memotxt);
+  color: var(--memotxt);
+}
+#campus-stores .choice:has(input:focus-visible) {
+  outline: 3px solid var(--mark);
+  outline-offset: 2px;
+}
+#campus-stores .stillout {
+  flex-basis: 100%;
+  margin: 4px 0;
+  transition:
+    opacity 200ms var(--ease-out),
+    translate 200ms var(--ease-out);
+}
+/* The custodian fields arrive from the choice that revealed them. */
+@starting-style {
+  #campus-stores .kititem:has(input[value="out"]:checked) .stillout {
+    opacity: 0;
+    translate: 0 -4px;
+  }
+}
+#campus-stores .kititem:not(:has(input[value="out"]:checked)) .stillout {
+  display: none;
+}
+#campus-stores .checkin {
+  margin: 0 0 6px;
+  display: grid;
+  gap: 6px;
+}
+#campus-stores .checkin select {
+  width: 100%;
+  margin-top: 4px;
 }
 #campus-stores .record {
   margin-top: 14px;
@@ -309,15 +736,30 @@ body > main {
 #campus-stores textarea {
   resize: vertical;
 }
+/* The status bar is where every confirmation and error lands, so it floats
+   over the content as a translucent layer instead of sitting off-screen. */
 #campus-stores .statusbar {
-  background: var(--desk);
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  background: color-mix(in srgb, var(--desk) 80%, transparent);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
   border-top: 1px solid var(--line);
   padding: 8px 16px;
-  color: var(--quiet);
-  font-size: 12px;
+  color: var(--ink);
+  font-size: 12.5px;
+  font-weight: 500;
 }
 #campus-stores .statusbar span {
   flex: 1 1 160px;
+}
+#campus-stores .statusbar.is-warn span {
+  color: var(--badtxt);
+  font-weight: 650;
+}
+#campus-stores .statusbar.is-warn span::before {
+  content: "! ";
 }
 #campus-stores .statusbar button {
   font-size: 12px;
@@ -336,7 +778,13 @@ body > main {
   }
   #campus-stores nav button {
     gap: 4px;
-    padding: 5px 7px;
+    padding: 5px 9px;
+  }
+  #campus-stores nav button[aria-pressed="true"] {
+    box-shadow: inset 0 -2px var(--mark);
+  }
+  #campus-stores .mini {
+    display: none;
   }
   #campus-stores .shift {
     flex-wrap: wrap;
@@ -361,6 +809,29 @@ body > main {
   }
   #campus-stores .row {
     gap: 5px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  #campus-stores button:active,
+  #campus-stores .choice:active {
+    transform: none;
+  }
+  #campus-stores .stillout {
+    transition: opacity 200ms ease;
+    translate: none;
+  }
+}
+@media (prefers-reduced-transparency: reduce) {
+  #campus-stores .statusbar {
+    background: var(--desk);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+@media (prefers-contrast: more) {
+  #campus-stores {
+    --line: light-dark(#7d8a90, #9aa6ac);
+    --quiet: light-dark(#34424c, #d7e0e4);
   }
 }
 @media (pointer: coarse) {
